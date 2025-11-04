@@ -8,6 +8,9 @@ const RELAY_FIREHOSE_URI = 'wss://bsky.network/xrpc/com.atproto.sync.subscribeRe
 const DATA_PERIOD = 1 * 1000;
 const DATA_INTERVAL = 10;
 
+// this number was arrived to via rigorous vibes-based estimation
+const GEIGER_DIVISOR = 6;
+
 function App() {
     const [isConnected, setIsConnected] = useState<boolean>(false);
     const [metric, setMetric] = useState<number>(0.0);
@@ -17,6 +20,7 @@ function App() {
 
     const geigerTick = useRef<Howl>(null);
     const isGeiger = useRef<HTMLInputElement>(null);
+    const geigerCount = useRef<number>(0);
 
     useEffect(() => {
         wsRef.current = new WebSocket(RELAY_FIREHOSE_URI);
@@ -38,7 +42,13 @@ function App() {
                 const record = cbor.decode(block.bytes);
                 if (record?.$type === 'app.bsky.feed.post') {
                     if (isGeiger.current?.checked && geigerTick.current)
-                        geigerTick.current.play();
+                    {
+                        if (++geigerCount.current > GEIGER_DIVISOR)
+                        {
+                            geigerCount.current = 0;
+                            geigerTick.current.play();
+                        }
+                    }
 
                     postListRef.current.push(Date.now());
                     if (postListRef.current.length > 1000) {
