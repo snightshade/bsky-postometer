@@ -41,13 +41,10 @@ function App() {
             for (const block of carBlocks) {
                 const record = cbor.decode(block.bytes);
                 if (record?.$type === 'app.bsky.feed.post') {
-                    if (isGeiger.current?.checked && geigerTick.current)
-                    {
-                        if (++geigerCount.current > GEIGER_DIVISOR)
-                        {
-                            geigerCount.current = 0;
-                            geigerTick.current.play();
-                        }
+                    if (isGeiger.current?.checked && geigerTick.current &&
+                        ++geigerCount.current > GEIGER_DIVISOR) {
+                        geigerCount.current = 0;
+                        geigerTick.current.play();
                     }
 
                     postListRef.current.push(Date.now());
