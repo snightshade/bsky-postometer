@@ -102,7 +102,7 @@ function App() {
                 <p>
                     Real-time data sourced from the firehose.
                     Powered by atcute.
-                    Built by Nightshade in about 30 minutes. <a href="https://github.com/snightshade/bsky-postometer">Source code here.</a>
+                    Built by Nightshade in about 30 minutes. <a href="https://github.com/snightshade/bsky-postometer">Source code/credits here.</a>
                 </p>
             </div>
         </>
